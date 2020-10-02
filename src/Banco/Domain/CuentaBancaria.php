@@ -4,7 +4,8 @@
 namespace Src\Banco\Domain;
 
 
-abstract class CuentaBancaria
+abstract class CuentaBancaria implements IServicioFinancero
+
 {
     private $numero;
     private $ciudad;
@@ -43,8 +44,6 @@ abstract class CuentaBancaria
         $this->saldo = $saldo;
     }
 
-    abstract function consignar(float $valorConsignacion, string $ciudadDeposito): string;
 
-    abstract function retirar(float $valorRetiro,string $fecha): string;
 
 }

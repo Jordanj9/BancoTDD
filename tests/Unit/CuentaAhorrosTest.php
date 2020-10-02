@@ -172,11 +172,10 @@ class CuentaAhorrosTest extends TestCase
     public function testRetiroDelMesSinCosto(): void {
         $cuentaAhorro = new CuentaAhorros('10001', 'Cuenta ejemplo', 'Valledupar', 500000);
 
-        $retiros = ['09/5/2020' => 100000, '09/10/2020' => 70000, '09/14/2020' => 30000, '09/28/2020' => 30000];
-        // $cont = 0;
+        $retiros = ['10/5/2020' => 100000, '10/10/2020' => 70000, '10/14/2020' => 30000, '10/28/2020' => 30000,'10/29/2020'=>20000];
         foreach ($retiros as $key => $value) {
             $result = $cuentaAhorro->retirar($value, $key);
         }
-        $this->assertEquals('Su Nuevo Saldo es de $265,000.00 pesos m/c.', $result);
+        $this->assertEquals('Su Nuevo Saldo es de $245,000.00 pesos m/c.', $result);
     }
 }

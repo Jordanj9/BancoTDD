@@ -48,17 +48,8 @@ class CuentaAhorros extends CuentaBancaria
     }
 
     function retirar(float $valorRetiro, string $fecha): string {
-        date_default_timezone_set('America/Bogota');
-        $hoy = date('m');
-        if (count($this->movimientos) > 0) {
-            foreach ($this->movimientos as $item) {
-                $date = explode('/', $item->fecha);
-                $mes = $date[0];
-                if ($item->tipo == 'RETIRO' && $mes == $hoy)
-                    $this->cont = $this->cont + 1;
-            }
-        }
-        $valorRetiro = $this->cont > 3 ? $valorRetiro + 5000 : $valorRetiro;
+        $numerosRetiros = $this->cobrarRetiro($fecha);
+        $valorRetiro = $numerosRetiros > 3 ? $valorRetiro + 5000 : $valorRetiro;
         $saldo = $this->getSaldo() - $valorRetiro;
         if ($saldo >= 20000) {
             $this->AddMovimiento($this->getSaldo(), 0.0, $valorRetiro, 'RETIRO',$fecha);
@@ -67,6 +58,26 @@ class CuentaAhorros extends CuentaBancaria
         } else {
             return 'Fondos insuficientes para realizar la operación.';
         }
+    }
+
+    private function cobrarRetiro(string $fecha): int{
+//        date_default_timezone_set('America/Bogota');
+//        $hoy = date('m');
+        $aux = explode('/',$fecha);
+        $cont = 0;
+        if (count($this->movimientos) > 0) {
+            foreach ($this->movimientos as $item) {
+                if($item->tipo == 'RETIRO'){
+                    $date = explode('/', $item->fecha);
+                    $mes = $date[0];
+                    $anio = $date[2];
+                    if ($mes == $aux[0] && $aux[2] == $anio){
+                        $cont = $cont + 1;
+                    }
+                }
+            }
+        }
+        return $cont;
     }
 
     private function tieneConsignaciones(): bool {
